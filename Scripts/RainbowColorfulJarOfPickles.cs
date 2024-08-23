@@ -6,7 +6,7 @@ public class RainbowColorfulJarOfPickles : ColorfulJarOfPicklesScrap
 {
 
     private Color nextColor;
-    private float lightSpeed = 2f;
+    private float lightSpeed = 1.5f;
 
     private float lightSpeedTimer;
     private Color lastColorSaved;

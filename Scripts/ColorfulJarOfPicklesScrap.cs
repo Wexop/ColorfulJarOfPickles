@@ -10,7 +10,7 @@ namespace ColorfulJarOfPickles.Scripts;
 public class ColorfulJarOfPicklesScrap : PhysicsProp
 {
     public GameObject jarGameObject;
-    public GameObject picklesGameObject;
+    public List<GameObject> picklesGameObjects;
     public Light lightObject;
 
     public List<Renderer> jarRenderers;
@@ -23,7 +23,7 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
         jarRenderers.ForEach(r =>
         {
             r.material.color = SetColorAlpha(color, r.material.color.a);
-            if (r.material.name.Contains(""))
+            if (r.material.name.Contains("Pickle"))
             {
                 r.material.SetColor("_EmissiveColor", color);
             }
@@ -59,7 +59,11 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
     public override void Start()
     {
         base.Start();
-        jarRenderers.Add(picklesGameObject.GetComponent<Renderer>());
+        picklesGameObjects.ForEach(p =>
+        {
+            jarRenderers.Add(p.GetComponent<Renderer>());
+        });
+        
         
         var jarRendersFound = jarGameObject.GetComponents<Renderer>().ToList();
         jarRendersFound.ForEach(o =>
@@ -70,6 +74,8 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
             }
         });
         
+        ChangeColor(GetRandomColor());
+        
         if (IsServer)
         {
             StartCoroutine(ChangeColorCoroutine());
@@ -79,7 +85,7 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
 
     public IEnumerator ChangeColorCoroutine()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.5f);
         
         NetworkColorfulJar.ChangeJarColorClientRpc(NetworkObjectId, GetRandomColor());
         

@@ -1,8 +1,8 @@
 {
   "name": "ColorfulJarOfPickles",
-  "version_number": "1.0.0",
+  "version_number": "1.0.1",
   "website_url": "https://github.com/Wexop/ColorfulJarOfPickles",
-  "description": "[V60+] Add a colorful animated jar of pickles scrap item, so cool !",
+  "description": "[V60+] Add multiple colorful animated jars of pickles scraps items, so cool !",
   "dependencies": [
     "BepInEx-BepInExPack-5.4.2100",
     "AinaVT-LethalConfig-1.4.2",

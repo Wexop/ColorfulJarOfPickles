@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>com.github.zehsteam.SellMyScrap</name>
+    </assembly>
+    <members>
+        <member name="M:com.github.zehsteam.SellMyScrap.Commands.SellCommand.GetScrapEaterIndex(System.Collections.Generic.List{com.github.zehsteam.SellMyScrap.Commands.CommandFlag})">
+            <summary>
+            
+            </summary>
+            <param name="foundFlags"></param>
+            <returns>-1 = no scrap eater, 0 = random scrap eater, 1+ = scrap eater index.</returns>
+        </member>
+        <member name="M:com.github.zehsteam.SellMyScrap.ConfigHelper.AddScrapEaterConfigItem(System.String,System.Action{System.String},System.Func{System.String})">
+            <summary>
+            Link your scrap eater SpawnWeight config setting to the SellMyScrap terminal config editor.
+            </summary>
+            <param name="key">SpawnWeight config setting key.</param>
+            <param name="SetValue">Action for setting your spawnWeight config setting value.</param>
+            <param name="GetValue">Func for getting your spawnWeight config setting value.</param>
+        </member>
+        <member name="M:com.github.zehsteam.SellMyScrap.MonoBehaviours.ScrapEaterBehaviour.OnAllClientsReceivedTargetScrap">
+            <summary>
+            Only gets called on the Host/Server
+            </summary>
+        </member>
+        <member name="M:com.github.zehsteam.SellMyScrap.MonoBehaviours.ScrapEaterBehaviour.StartAnimation">
+            <summary>
+            Do your animation in here.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:com.github.zehsteam.SellMyScrap.MonoBehaviours.ScrapEaterBehaviour.OnAllClientsFinishedAnimation">
+            <summary>
+            Only gets called on the Host/Server
+            </summary>
+        </member>
+        <member name="M:com.github.zehsteam.SellMyScrap.ScrapEaters.ScrapEaterManager.AddScrapEater(UnityEngine.GameObject,System.Func{System.Int32})">
+            <summary>
+            Register your scrap eater.
+            </summary>
+            <param name="spawnPrefab">Your scrap eater spawn prefab.</param>
+            <param name="GetSpawnWeight">Func for getting your spawnWeight config setting value.</param>
+        </member>
+    </members>
+</doc>

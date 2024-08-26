@@ -1,5 +1,10 @@
 # Changelog
 
+### v1.0.3
+
+- Fix floating small jar of pickles scrap
+- Update scraps values
+
 ### v1.0.2
 
 - Fix light shadow cast issue, that make fps drop

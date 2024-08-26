@@ -19,7 +19,7 @@ using LethalLib.Modules;
 
         const string GUID = "wexop.colorful_jar_of_pickles";
         const string NAME = "ColorfulJarOfPickles";
-        const string VERSION = "1.0.2";
+        const string VERSION = "1.0.3";
 
         public static ColorfulJarOfPicklesPlugin instance;
 

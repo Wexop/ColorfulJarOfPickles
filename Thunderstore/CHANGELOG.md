@@ -1,9 +1,17 @@
 # Changelog
 
+### v1.0.2
+
+- Fix light shadow cast issue, that make fps drop
+- Fix rainbow spawn chance (it was same as normal one oops)
+- Change default scraps spawn chance
+- Add a cute small jar of pickles
+- Add rainbow version for each scrap (Small, normal and big jars)
+
 ### v1.0.1
 
 - Client have a random color when joining a game with scrap already in ship
-- Add a big jar of pickles (two handed)
+- Add a big jar of pickles (two-handed)
 
 ### v1.0.0
 

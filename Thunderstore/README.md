@@ -6,4 +6,6 @@ There is also a rare rainbow jar of pickles, even more colorful, so cool !
 
 What could be cooler ? A big jar of pickles ! To share with friends :)
 
-For any issue or suggestion, feel free to open an issue on the GitHub project :)
+What could be EVEN cooler ? A cute small jar of pickles ! To not share with friends :)
+
+For any issue or suggestion, feel free to open an issue on the GitHub project !

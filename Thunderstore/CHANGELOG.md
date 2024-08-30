@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.0.4
+
+- Add 3 new (+ rainbow versions) jars of pickles scrap items
+
 ### v1.0.3
 
 - Fix floating small jar of pickles scrap

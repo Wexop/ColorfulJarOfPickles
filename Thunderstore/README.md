@@ -8,4 +8,6 @@ What could be cooler ? A big jar of pickles ! To share with friends :)
 
 What could be EVEN cooler ? A cute small jar of pickles ! To not share with friends :)
 
+Also add multiple others jars of pickles, find them all !
+
 For any issue or suggestion, feel free to open an issue on the GitHub project !

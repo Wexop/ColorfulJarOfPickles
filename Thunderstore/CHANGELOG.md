@@ -1,5 +1,10 @@
 # Changelog
 
+### v1.0.5
+
+- Fix flat jar of pickles collider
+- Add a round jar of pickles
+
 ### v1.0.4
 
 - Add 3 new (+ rainbow versions) jars of pickles scrap items

@@ -19,7 +19,7 @@ using LethalLib.Modules;
 
         const string GUID = "wexop.colorful_jar_of_pickles";
         const string NAME = "ColorfulJarOfPickles";
-        const string VERSION = "1.0.4";
+        const string VERSION = "1.0.5";
 
         public static ColorfulJarOfPicklesPlugin instance;
 
@@ -29,6 +29,7 @@ using LethalLib.Modules;
         public ConfigEntry<string> longJarSpawnMoonRarity;
         public ConfigEntry<string> flatJarSpawnMoonRarity;
         public ConfigEntry<string> stackSmallJarSpawnMoonRarity;
+        public ConfigEntry<string> roundJarSpawnMoonRarity;
         
         public ConfigEntry<string> rainbowSmallJarSpawnMoonRarity;
         public ConfigEntry<string> rainbowBigJarSpawnMoonRarity;
@@ -36,6 +37,7 @@ using LethalLib.Modules;
         public ConfigEntry<string> rainbowLongJarSpawnMoonRarity;
         public ConfigEntry<string> rainbowFlatJarSpawnMoonRarity;
         public ConfigEntry<string> rainbowStackSmallJarSpawnMoonRarity;
+        public ConfigEntry<string> rainbowRoundJarSpawnMoonRarity;
 
         void Awake()
         {
@@ -92,9 +94,14 @@ using LethalLib.Modules;
             CreateStringConfig(flatJarSpawnMoonRarity, true);
             
             stackSmallJarSpawnMoonRarity = Config.Bind("General", "StackSmallJarSpawnMoonRarity", 
-                RarityString(10) ,       
+                RarityString(15) ,       
                 "Chance for stack of jars scrap to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
             CreateStringConfig(stackSmallJarSpawnMoonRarity, true);
+            
+            roundJarSpawnMoonRarity = Config.Bind("General", "RoundJarSpawnMoonRarity", 
+                RarityString(30) ,       
+                "Chance for round jar scrap to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
+            CreateStringConfig(roundJarSpawnMoonRarity, true);
             
             //RAINBOWS
             
@@ -125,8 +132,14 @@ using LethalLib.Modules;
             
             rainbowStackSmallJarSpawnMoonRarity = Config.Bind("General", "RainbowStackSmallJarSpawnMoonRarity", 
                 RarityString(3) ,       
-                "Chance for rainbow stack of jars scrap to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
+                "Chance for rainbow stack of jars scrap to spawn for any moon, examp" +
+                "le => assurance:100,offense:50 . You need to restart the game.");
             CreateStringConfig(rainbowStackSmallJarSpawnMoonRarity, true);
+            
+            rainbowRoundJarSpawnMoonRarity = Config.Bind("General", "RainbowRoundJarSpawnMoonRarity", 
+                RarityString(5) ,       
+                "Chance for rainbow round jar scrap to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
+            CreateStringConfig(rainbowRoundJarSpawnMoonRarity, true);
         }
         
         void RegisterScrap(AssetBundle bundle)
@@ -187,6 +200,14 @@ using LethalLib.Modules;
             Utilities.FixMixerGroups(stackColorfulJar.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(stackSmallJarSpawnMoonRarity.Value, stackColorfulJar ); 
             
+            //roundColorfulJar
+            Item roundColorfulJar = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/RoundPickleJar.asset");
+            Logger.LogInfo($"{roundColorfulJar.name} FOUND");
+            Logger.LogInfo($"{roundColorfulJar.spawnPrefab} prefab");
+            NetworkPrefabs.RegisterNetworkPrefab(roundColorfulJar.spawnPrefab);
+            Utilities.FixMixerGroups(roundColorfulJar.spawnPrefab);
+            RegisterUtil.RegisterScrapWithConfig(roundJarSpawnMoonRarity.Value, roundColorfulJar ); 
+            
             //rainbowSmallColorfulJar
             Item rainbowSmallColorfulJar = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/RainbowSmallPickleJar.asset");
             Logger.LogInfo($"{rainbowSmallColorfulJar.name} FOUND");
@@ -226,6 +247,14 @@ using LethalLib.Modules;
             NetworkPrefabs.RegisterNetworkPrefab(rainbowStackColorfulJar.spawnPrefab);
             Utilities.FixMixerGroups(rainbowStackColorfulJar.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(rainbowStackSmallJarSpawnMoonRarity.Value, rainbowStackColorfulJar ); 
+            
+            //rainbowRoundColorfulJar
+            Item rainbowRoundColorfulJar = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/RainbowRoundPickleJar.asset");
+            Logger.LogInfo($"{rainbowRoundColorfulJar.name} FOUND");
+            Logger.LogInfo($"{rainbowRoundColorfulJar.spawnPrefab} prefab");
+            NetworkPrefabs.RegisterNetworkPrefab(rainbowRoundColorfulJar.spawnPrefab);
+            Utilities.FixMixerGroups(rainbowRoundColorfulJar.spawnPrefab);
+            RegisterUtil.RegisterScrapWithConfig(rainbowRoundJarSpawnMoonRarity.Value, rainbowRoundColorfulJar ); 
 
         }
         

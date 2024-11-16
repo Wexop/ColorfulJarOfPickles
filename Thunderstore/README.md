@@ -11,3 +11,7 @@ What could be EVEN cooler ? A cute small jar of pickles ! To not share with frie
 Also add multiple others jars of pickles, find them all !
 
 For any issue or suggestion, feel free to open an issue on the GitHub project !
+
+## Credits
+
+- Music for Dancing pickles : Play Time - Fun Upbeat Gaming Birthday Music from FASSounds,  https://pixabay.com/fr/music/optimiste-play-time-fun-upbeat-gaming-birthday-music-259703/

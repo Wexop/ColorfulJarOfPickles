@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.0.6
+
+- Add 5 new colorful jars of pickles
+
 ### v1.0.5
 
 - Fix flat jar of pickles collider

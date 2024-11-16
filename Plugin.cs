@@ -10,7 +10,7 @@ using LethalConfig.ConfigItems.Options;
 using UnityEngine;
 using LethalLib.Modules;
 
- namespace ColorfulJarOfPickles
+namespace ColorfulJarOfPickles
 {
     [BepInPlugin(GUID, NAME, VERSION)]
     [BepInDependency(StaticNetcodeLib.StaticNetcodeLib.Guid, BepInDependency.DependencyFlags.HardDependency)]
@@ -34,6 +34,7 @@ using LethalLib.Modules;
         public ConfigEntry<string> caseOfSmallPicklesRarity;
         public ConfigEntry<string> flaskPicklesRarity;
         public ConfigEntry<string> giantPicklesRarity;
+        public ConfigEntry<string> dancingPicklesRarity;
         
         public ConfigEntry<string> rainbowSmallJarSpawnMoonRarity;
         public ConfigEntry<string> rainbowBigJarSpawnMoonRarity;
@@ -46,6 +47,9 @@ using LethalLib.Modules;
         public ConfigEntry<string> rainbowCaseOfSmallPicklesRarity;
         public ConfigEntry<string> rainbowFlaskPicklesRarity;
         public ConfigEntry<string> rainbowGiantPicklesRarity;
+        public ConfigEntry<string> rainbowDancingPicklesRarity;
+
+        public ConfigEntry<float> dancingMusicVolume;
 
         void Awake()
         {
@@ -131,6 +135,11 @@ using LethalLib.Modules;
                 "Chance for giant jar of pickles scrap to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
             CreateStringConfig(giantPicklesRarity, true);
             
+            dancingPicklesRarity = Config.Bind("General", "DancingPicklesRarity", 
+                RarityString(10) ,       
+                "Chance for dancing pickles scrap to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
+            CreateStringConfig(dancingPicklesRarity, true);
+            
             //RAINBOWS
             
             rainbowSmallJarSpawnMoonRarity = Config.Bind("General", "RainbowSmallJarScrapSpawnRarity", 
@@ -188,6 +197,17 @@ using LethalLib.Modules;
                 RarityString(1) ,       
                 "Chance for rainbow giant jar of pickles scrap to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
             CreateStringConfig(rainbowGiantPicklesRarity, true);
+            
+            rainbowDancingPicklesRarity = Config.Bind("General", "RainbowDancingPicklesRarity", 
+                RarityString(1) ,       
+                "Chance for rainbow giant jar of pickles scrap to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
+            CreateStringConfig(rainbowDancingPicklesRarity, true);
+            
+            //MUSIC
+            dancingMusicVolume = Config.Bind("Sound", "DancingMusicVolume", 
+                1f,       
+                "Dancing Pickles music volume. You don't need to restart the game.");
+            CreateFloatConfig(dancingMusicVolume, 0f, 1f);
  
         }
         
@@ -289,6 +309,14 @@ using LethalLib.Modules;
             Utilities.FixMixerGroups(colorfulPickleJarGiant.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(giantPicklesRarity.Value, colorfulPickleJarGiant ); 
             
+            //dancingPickles
+            Item dancingPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/DancingPickles.asset");
+            Logger.LogInfo($"{dancingPickles.name} FOUND");
+            Logger.LogInfo($"{dancingPickles.spawnPrefab} prefab");
+            NetworkPrefabs.RegisterNetworkPrefab(dancingPickles.spawnPrefab);
+            Utilities.FixMixerGroups(dancingPickles.spawnPrefab);
+            RegisterUtil.RegisterScrapWithConfig(dancingPicklesRarity.Value, dancingPickles ); 
+            
             //rainbowSmallColorfulJar
             Item rainbowSmallColorfulJar = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/RainbowSmallPickleJar.asset");
             Logger.LogInfo($"{rainbowSmallColorfulJar.name} FOUND");
@@ -368,6 +396,14 @@ using LethalLib.Modules;
             NetworkPrefabs.RegisterNetworkPrefab(rainbowGiantPickles.spawnPrefab);
             Utilities.FixMixerGroups(rainbowGiantPickles.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(rainbowGiantPicklesRarity.Value, rainbowGiantPickles ); 
+            
+            //rainbowDancingPickles
+            Item rainbowDancingPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/DancingPicklesRainbow.asset");
+            Logger.LogInfo($"{rainbowDancingPickles.name} FOUND");
+            Logger.LogInfo($"{rainbowDancingPickles.spawnPrefab} prefab");
+            NetworkPrefabs.RegisterNetworkPrefab(rainbowDancingPickles.spawnPrefab);
+            Utilities.FixMixerGroups(rainbowDancingPickles.spawnPrefab);
+            RegisterUtil.RegisterScrapWithConfig(rainbowDancingPicklesRarity.Value, rainbowDancingPickles ); 
 
         }
         

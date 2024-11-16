@@ -16,6 +16,11 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
     public List<Renderer> jarRenderers;
 
     public Color actualColor;
+
+    public virtual void TriggerDance(bool dance)
+    {
+        
+    }
     
     public void ChangeColor(Color color)
     {
@@ -80,6 +85,10 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
         {
             StartCoroutine(ChangeColorCoroutine());
         }
+        else
+        {
+            StartCoroutine(AskColorCoroutine());
+        }
 
     }
 
@@ -88,6 +97,15 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
         yield return new WaitForSeconds(0.5f);
         
         NetworkColorfulJar.ChangeJarColorClientRpc(NetworkObjectId, GetRandomColor());
+        
+ 
+    }
+
+    public IEnumerator AskColorCoroutine()
+    {
+        yield return new WaitForSeconds(1f);
+        
+        NetworkColorfulJar.AskColorServerRpc(NetworkObjectId);
         
  
     }

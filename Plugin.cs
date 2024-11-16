@@ -30,6 +30,7 @@ using LethalLib.Modules;
         public ConfigEntry<string> flatJarSpawnMoonRarity;
         public ConfigEntry<string> stackSmallJarSpawnMoonRarity;
         public ConfigEntry<string> roundJarSpawnMoonRarity;
+        public ConfigEntry<string> caseOfPicklesRarity;
         public ConfigEntry<string> caseOfSmallPicklesRarity;
         public ConfigEntry<string> flaskPicklesRarity;
         public ConfigEntry<string> giantPicklesRarity;
@@ -41,6 +42,7 @@ using LethalLib.Modules;
         public ConfigEntry<string> rainbowFlatJarSpawnMoonRarity;
         public ConfigEntry<string> rainbowStackSmallJarSpawnMoonRarity;
         public ConfigEntry<string> rainbowRoundJarSpawnMoonRarity;
+        public ConfigEntry<string> rainbowCaseOfPicklesRarity;
         public ConfigEntry<string> rainbowCaseOfSmallPicklesRarity;
         public ConfigEntry<string> rainbowFlaskPicklesRarity;
         public ConfigEntry<string> rainbowGiantPicklesRarity;
@@ -109,6 +111,11 @@ using LethalLib.Modules;
                 "Chance for round jar scrap to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
             CreateStringConfig(roundJarSpawnMoonRarity, true);
             
+            caseOfPicklesRarity = Config.Bind("General", "CaseOfPicklesRarity", 
+                RarityString(15) ,       
+                "Chance for case of pickles to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
+            CreateStringConfig(caseOfPicklesRarity, true);
+            
             caseOfSmallPicklesRarity = Config.Bind("General", "CaseOfSmallPicklesRarity", 
                 RarityString(15) ,       
                 "Chance for case of small pickles to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
@@ -166,6 +173,11 @@ using LethalLib.Modules;
                 RarityString(3) ,       
                 "Chance for rainbow case of small pickles scrap to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
             CreateStringConfig(rainbowCaseOfSmallPicklesRarity, true);
+            
+            rainbowCaseOfPicklesRarity = Config.Bind("General", "RainbowCaseOfPicklesRarity", 
+                RarityString(3) ,       
+                "Chance for rainbow case of pickles scrap to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
+            CreateStringConfig(rainbowCaseOfPicklesRarity, true);
             
             rainbowFlaskPicklesRarity = Config.Bind("General", "RainbowFlaskPicklesRarity", 
                 RarityString(5) ,       
@@ -236,6 +248,14 @@ using LethalLib.Modules;
             NetworkPrefabs.RegisterNetworkPrefab(stackColorfulJar.spawnPrefab);
             Utilities.FixMixerGroups(stackColorfulJar.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(stackSmallJarSpawnMoonRarity.Value, stackColorfulJar ); 
+            
+            //caseOfPickles
+            Item caseOfPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/CaseOfPickles.asset");
+            Logger.LogInfo($"{caseOfPickles.name} FOUND");
+            Logger.LogInfo($"{caseOfPickles.spawnPrefab} prefab");
+            NetworkPrefabs.RegisterNetworkPrefab(caseOfPickles.spawnPrefab);
+            Utilities.FixMixerGroups(caseOfPickles.spawnPrefab);
+            RegisterUtil.RegisterScrapWithConfig(caseOfPicklesRarity.Value, caseOfPickles ); 
             
             //caseOfSmallPickles
             Item caseOfSmallPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/CaseOfSmallPickles.asset");
@@ -316,6 +336,14 @@ using LethalLib.Modules;
             NetworkPrefabs.RegisterNetworkPrefab(rainbowRoundColorfulJar.spawnPrefab);
             Utilities.FixMixerGroups(rainbowRoundColorfulJar.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(rainbowRoundJarSpawnMoonRarity.Value, rainbowRoundColorfulJar ); 
+            
+            //rainbowCaseOfPickles
+            Item rainbowCaseOfPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/CaseOfPicklesRainbow.asset");
+            Logger.LogInfo($"{rainbowCaseOfPickles.name} FOUND");
+            Logger.LogInfo($"{rainbowCaseOfPickles.spawnPrefab} prefab");
+            NetworkPrefabs.RegisterNetworkPrefab(rainbowCaseOfPickles.spawnPrefab);
+            Utilities.FixMixerGroups(rainbowCaseOfPickles.spawnPrefab);
+            RegisterUtil.RegisterScrapWithConfig(rainbowCaseOfPicklesRarity.Value, rainbowCaseOfPickles ); 
             
             //rainbowCaseOfSmallPickles
             Item rainbowCaseOfSmallPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/CaseOfSmallPicklesRainbow.asset");

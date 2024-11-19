@@ -1,9 +1,10 @@
 ﻿using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace ColorfulJarOfPickles.Scripts;
 
-public class DancingJarOfPickles : ColorfulJarOfPicklesScrap
+public class DancingJarOfPickles : NetworkBehaviour
 {
     private static readonly int Playing = Animator.StringToHash("playing");
 
@@ -22,8 +23,9 @@ public class DancingJarOfPickles : ColorfulJarOfPicklesScrap
         animator.SetBool(Playing, false);
     }
 
-    public override void TriggerDance(bool dance)
+    public void TriggerDance(bool dance)
     {
+        Debug.Log($"TriggerDance {dance}");
         animator.SetBool(Playing, dance);
 
         if (dance)
@@ -39,10 +41,9 @@ public class DancingJarOfPickles : ColorfulJarOfPicklesScrap
         StartCoroutine(onPlayingSong());
     }
 
-    public override void GrabItem()
+    public void OnGrabItem()
     {
-        base.GrabItem();
-        
+        Debug.Log("OnGrabItem");
         isPlaying = !isPlaying;
         NetworkColorfulJar.DancePicklesServerRpc(NetworkObjectId, isPlaying);
 

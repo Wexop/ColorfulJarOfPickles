@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 namespace ColorfulJarOfPickles.Scripts;
@@ -17,9 +17,26 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
 
     public Color actualColor;
 
+    public UnityEvent<bool> onTriggerDance;
+    public UnityEvent onGrabItem;
+
     public virtual void TriggerDance(bool dance)
     {
+        if (onTriggerDance != null)
+        {
+            Debug.Log($"INVOKE DANCE {dance}");
+            onTriggerDance.Invoke(dance);
+        }
+    }
+
+    public override void GrabItem()
+    {
         
+        if (onGrabItem != null)
+        {
+            onGrabItem.Invoke();
+        }
+
     }
     
     public void ChangeColor(Color color)

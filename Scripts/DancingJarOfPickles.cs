@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ColorfulJarOfPickles.Scripts;
 
-public class DancingJarOfPickles : NetworkBehaviour
+public class DancingJarOfPickles : ColorfulJarOfPicklesScrap
 {
     private static readonly int Playing = Animator.StringToHash("playing");
 
@@ -41,13 +41,43 @@ public class DancingJarOfPickles : NetworkBehaviour
         StartCoroutine(onPlayingSong());
     }
 
-    public void OnGrabItem()
+    public override void ItemActivate(bool used, bool buttonDown = true)
     {
-        Debug.Log("OnGrabItem");
-        isPlaying = !isPlaying;
-        NetworkColorfulJar.DancePicklesServerRpc(NetworkObjectId, isPlaying);
-
+        base.ItemActivate(used, buttonDown);
+        
+        Debug.Log("Activate item");
+        SetIsPlaying(!isPlaying);
+        
     }
-    
+
+    private void SetIsPlaying(bool value)
+    {
+        
+        SetIsPlayingServerRpc(value);
+        SetIsPlayingOnLocalClient(value);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetIsPlayingServerRpc(bool value, ServerRpcParams serverRpcParams = default)
+    {
+        var senderClientId = serverRpcParams.Receive.SenderClientId;
+        if (!NetworkManager.ConnectedClients.ContainsKey(senderClientId)) return;
+
+        SetIsPlayingClientRpc(value, senderClientId);
+    }
+
+    [ClientRpc]
+    private void SetIsPlayingClientRpc(bool value, ulong senderClientId)
+    {
+        if (NetworkManager.Singleton.LocalClientId == senderClientId) return;
+
+        SetIsPlayingOnLocalClient(value);
+    }
+
+    private void SetIsPlayingOnLocalClient(bool value)
+    {
+        isPlaying = value;
+        TriggerDance(value);
+    }
 
 }

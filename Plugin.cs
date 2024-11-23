@@ -67,6 +67,55 @@ namespace ColorfulJarOfPickles
             
             
             Logger.LogInfo($"ColorfulJarOfPickles is ready!");
+
+            NetcodePatcherAwake();
+        }
+        
+        private void NetcodePatcherAwake()
+        {
+            try
+            {
+                var currentAssembly = Assembly.GetExecutingAssembly();
+                var types = currentAssembly.GetTypes();
+
+                foreach (var type in types)
+                {
+                    var methods = type.GetMethods(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+
+                    foreach (var method in methods)
+                    {
+                        try
+                        {
+                            // Safely attempt to retrieve custom attributes
+                            var attributes = method.GetCustomAttributes(typeof(RuntimeInitializeOnLoadMethodAttribute), false);
+
+                            if (attributes.Length > 0)
+                            {
+                                try
+                                {
+                                    // Safely attempt to invoke the method
+                                    method.Invoke(null, null);
+                                }
+                                catch (TargetInvocationException ex)
+                                {
+                                    // Log and continue if method invocation fails (e.g., due to missing dependencies)
+                                    Logger.LogWarning($"Failed to invoke method {method.Name}: {ex.Message}");
+                                }
+                            }
+                        }
+                        catch (System.Exception ex)
+                        {
+                            // Handle errors when fetching custom attributes, due to missing types or dependencies
+                            Logger.LogWarning($"Error processing method {method.Name} in type {type.Name}: {ex.Message}");
+                        }
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                // Catch any general exceptions that occur in the process
+                Logger.LogError($"An error occurred in NetcodePatcherAwake: {ex.Message}");
+            }
         }
 
         string RarityString(int rarity)

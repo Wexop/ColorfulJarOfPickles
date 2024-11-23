@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
@@ -16,28 +17,6 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
     public List<Renderer> jarRenderers;
 
     public Color actualColor;
-
-    public UnityEvent<bool> onTriggerDance;
-    public UnityEvent onGrabItem;
-
-    public virtual void TriggerDance(bool dance)
-    {
-        if (onTriggerDance != null)
-        {
-            Debug.Log($"INVOKE DANCE {dance}");
-            onTriggerDance.Invoke(dance);
-        }
-    }
-
-    public override void GrabItem()
-    {
-        
-        if (onGrabItem != null)
-        {
-            onGrabItem.Invoke();
-        }
-
-    }
     
     public void ChangeColor(Color color)
     {
@@ -113,7 +92,7 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
     {
         yield return new WaitForSeconds(0.5f);
         
-        NetworkColorfulJar.ChangeJarColorClientRpc(NetworkObjectId, GetRandomColor());
+        ChangeColorClientRpc( actualColor );
         
  
     }
@@ -122,8 +101,20 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
     {
         yield return new WaitForSeconds(1f);
         
-        NetworkColorfulJar.AskColorServerRpc(NetworkObjectId);
+        AskColorServerRpc();
         
  
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void AskColorServerRpc()
+    {
+        ChangeColorClientRpc(actualColor);
+    }
+
+    [ClientRpc]
+    private void ChangeColorClientRpc(Color color)
+    {
+        ChangeColor(color);
     }
 }

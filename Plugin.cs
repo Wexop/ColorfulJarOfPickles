@@ -13,7 +13,6 @@ using LethalLib.Modules;
 namespace ColorfulJarOfPickles
 {
     [BepInPlugin(GUID, NAME, VERSION)]
-    [BepInDependency(StaticNetcodeLib.StaticNetcodeLib.Guid, BepInDependency.DependencyFlags.HardDependency)]
     public class ColorfulJarOfPicklesPlugin : BaseUnityPlugin
     {
 

@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 namespace ColorfulJarOfPickles.Scripts;
 
-public class ColorfulJarOfPicklesScrap : PhysicsProp
+public class ColorfulJarOfPicklesScrap : GrabbableObject
 {
     public GameObject jarGameObject;
     public List<GameObject> picklesGameObjects;
@@ -20,6 +20,7 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
     
     public void ChangeColor(Color color)
     {
+        Debug.Log($"NEW COLOR FOR JAR {NetworkObjectId} : {color}");
         lightObject.color = color;
         jarRenderers.ForEach(r =>
         {
@@ -80,6 +81,7 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
         if (IsServer)
         {
             StartCoroutine(ChangeColorCoroutine());
+            TestServerRpc("SUPER TEST RPC");
         }
         else
         {
@@ -102,19 +104,32 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
         yield return new WaitForSeconds(1f);
         
         AskColorServerRpc();
-        
- 
     }
 
     [ServerRpc(RequireOwnership = false)]
     private void AskColorServerRpc()
     {
+        Debug.Log($"SERVER CALL CHANGE COLOR {actualColor}");
         ChangeColorClientRpc(actualColor);
     }
 
     [ClientRpc]
     private void ChangeColorClientRpc(Color color)
     {
+        Debug.Log($"CLIENT CALL CHANGE COLOR {actualColor}");
         ChangeColor(color);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void TestServerRpc(string test)
+    {
+        Debug.Log($"SERVER CALL TEST {test}");
+        TestClientRpc(test);
+    }
+
+    [ClientRpc]
+    private void TestClientRpc(string test)
+    {
+        Debug.Log($"CLIENT CALL TEST {test}");
     }
 }

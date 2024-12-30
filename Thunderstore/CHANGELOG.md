@@ -1,9 +1,9 @@
 # Changelog
 
-### v1.0.8
+### v1.0.7
 
-- Some fixs
-- Add more pickles variants
+- Fix texture color for some variants
+- Add 2 new scraps
 
 ### v1.0.6
 

@@ -19,7 +19,7 @@ namespace ColorfulJarOfPickles
 
         const string GUID = "wexop.colorful_jar_of_pickles";
         const string NAME = "ColorfulJarOfPickles";
-        const string VERSION = "1.0.8";
+        const string VERSION = "1.0.7";
 
         public static ColorfulJarOfPicklesPlugin instance;
 

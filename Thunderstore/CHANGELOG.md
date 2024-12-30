@@ -1,5 +1,10 @@
 # Changelog
 
+### v1.0.8
+
+- Some fixs
+- Add more pickles variants
+
 ### v1.0.6
 
 - Add 5 new colorful jars of pickles

@@ -24,7 +24,6 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
     {
         if (onTriggerDance != null)
         {
-            Debug.Log($"INVOKE DANCE {dance}");
             onTriggerDance.Invoke(dance);
         }
     }

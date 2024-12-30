@@ -25,7 +25,6 @@ public class DancingJarOfPickles : NetworkBehaviour
 
     public void TriggerDance(bool dance)
     {
-        Debug.Log($"TriggerDance {dance}");
         animator.SetBool(Playing, dance);
 
         if (dance)
@@ -43,7 +42,6 @@ public class DancingJarOfPickles : NetworkBehaviour
 
     public void OnGrabItem()
     {
-        Debug.Log("OnGrabItem");
         isPlaying = !isPlaying;
         NetworkColorfulJar.DancePicklesServerRpc(NetworkObjectId, isPlaying);
 

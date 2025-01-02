@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
-using BepInEx;
+﻿using BepInEx;
+using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using BepInEx.Configuration;
 using ColorfulJarOfPickles.Utils;
@@ -13,13 +14,12 @@ using LethalLib.Modules;
 namespace ColorfulJarOfPickles
 {
     [BepInPlugin(GUID, NAME, VERSION)]
-    [BepInDependency(StaticNetcodeLib.StaticNetcodeLib.Guid, BepInDependency.DependencyFlags.HardDependency)]
     public class ColorfulJarOfPicklesPlugin : BaseUnityPlugin
     {
 
         const string GUID = "wexop.colorful_jar_of_pickles";
         const string NAME = "ColorfulJarOfPickles";
-        const string VERSION = "1.0.7";
+        const string VERSION = "1.0.8";
 
         public static ColorfulJarOfPicklesPlugin instance;
 
@@ -67,6 +67,7 @@ namespace ColorfulJarOfPickles
             Logger.LogInfo($"ColorfulJarOfPickles bundle found !");
             
             LoadConfigs();
+            NetcodePatcher();
             RegisterScrap(bundle);
             
             
@@ -481,6 +482,33 @@ namespace ColorfulJarOfPickles
             LethalConfigManager.AddConfigItem(exampleSlider);
         }
 
+        /// <summary>
+        ///     Slightly modified version of: https://github.com/EvaisaDev/UnityNetcodePatcher?tab=readme-ov-file#preparing-mods-for-patching
+        /// </summary>
+        private static void NetcodePatcher()
+        {
+            Type[] types;
+            try
+            {
+                types = Assembly.GetExecutingAssembly().GetTypes();
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                // This goofy try catch is needed here to be able to use soft dependencies in the future, though none are present at the moment.
+                types = e.Types.Where(type => type != null).ToArray();
+            }
 
+            foreach (Type type in types)
+            {
+                foreach (MethodInfo method in type.GetMethods(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static))
+                {
+                    if (method.GetCustomAttributes(typeof(RuntimeInitializeOnLoadMethodAttribute), false).Length > 0)
+                    {
+                        // Do weird magic...
+                        _ = method.Invoke(null, null);
+                    }
+                }
+            }
+        }
     }
 }

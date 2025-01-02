@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.0.8
+
+- Removed StaticNetcodeLib dependency
+
 ### v1.0.7
 
 - Fix texture color for some variants

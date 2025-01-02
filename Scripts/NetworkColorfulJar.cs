@@ -1,11 +1,9 @@
-﻿using System.Linq;
-using StaticNetcodeLib;
+﻿/* using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
 namespace ColorfulJarOfPickles.Scripts;
 
-[StaticNetcode]
 public class NetworkColorfulJar
 {
 
@@ -66,4 +64,4 @@ public class NetworkColorfulJar
         }
     }
 
-}
+} */

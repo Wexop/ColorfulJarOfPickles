@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
@@ -94,35 +94,35 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
                 jarRenderers.Add(o);
             }
         });
-        
-        ChangeColor(GetRandomColor());
-        
-        if (IsServer)
+
+        if (IsHost)
         {
-            StartCoroutine(ChangeColorCoroutine());
+            // Assign color to pickle jar locally for the host.
+            ChangeColor(GetRandomColor());
         }
         else
         {
-            StartCoroutine(AskColorCoroutine());
+            // Request assigned color from the host.
+            AskColorServerRpc();
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void AskColorServerRpc()
+    {
+        ChangeJarColorClientRpc(actualColor);
+    }
+
+    [ClientRpc]
+    public void ChangeJarColorClientRpc(Color color)
+    {
+        // Return if already synced with the host.
+        if (IsHost || actualColor == color)
+        {
+            return;
         }
 
-    }
-
-    public IEnumerator ChangeColorCoroutine()
-    {
-        yield return new WaitForSeconds(0.5f);
-        
-        NetworkColorfulJar.ChangeJarColorClientRpc(NetworkObjectId, GetRandomColor());
-        
- 
-    }
-
-    public IEnumerator AskColorCoroutine()
-    {
-        yield return new WaitForSeconds(1f);
-        
-        NetworkColorfulJar.AskColorServerRpc(NetworkObjectId);
-        
- 
+        Debug.Log($"COLOR CHANGE {NetworkObjectId} SET VALUE {color}");
+        ChangeColor(color);
     }
 }

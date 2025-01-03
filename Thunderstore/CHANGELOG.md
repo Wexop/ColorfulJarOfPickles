@@ -1,5 +1,10 @@
 # Changelog
 
+### v1.1.0
+
+- Fix Dancing jar of pickles animation + sometimes playing twice
+- Remove Static Netcode dependence (Thanks to Pacoito ! )
+
 ### v1.0.7
 
 - Fix texture color for some variants

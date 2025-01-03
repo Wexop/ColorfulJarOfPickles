@@ -42,9 +42,23 @@ public class DancingJarOfPickles : NetworkBehaviour
 
     public void OnGrabItem()
     {
-        isPlaying = !isPlaying;
-        NetworkColorfulJar.DancePicklesServerRpc(NetworkObjectId, isPlaying);
 
+        DancePicklesServerRpc();
+
+    }
+    
+    [ServerRpc(RequireOwnership = false)]
+    public void DancePicklesServerRpc()
+    {
+        isPlaying = !isPlaying;
+        DancePicklesClientRpc(isPlaying);
+    }
+
+
+    [ClientRpc]
+    public void DancePicklesClientRpc(bool dance)
+    {
+        TriggerDance(dance);
     }
     
 

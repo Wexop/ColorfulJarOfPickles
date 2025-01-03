@@ -7,6 +7,9 @@
         <Version>1.0.0</Version>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <LangVersion>latest</LangVersion>
+
+        <DebugType>embedded</DebugType>
+
     </PropertyGroup>
 
     <ItemGroup>
@@ -41,4 +44,9 @@
         <HintPath>..\DEPENDENCES\STATICNETCODELIB\BepInEx\plugins\StaticNetcodeLib\Xilophor.StaticNetcodeLib.dll</HintPath>
       </Reference>
     </ItemGroup>
+
+    <!-- Run Evaisa's Netcode patcher after building (https://github.com/EvaisaDev/UnityNetcodePatcher) -->
+    <Target Name="NetcodePatch" AfterTargets="PostBuildEvent">
+        <Exec Command="netcode-patch &quot;$(TargetPath)&quot; @(ReferencePathWithRefAssemblies->'&quot;%(Identity)&quot;', ' ')" />
+    </Target>
 </Project>

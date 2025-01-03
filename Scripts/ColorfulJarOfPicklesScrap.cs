@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
@@ -99,30 +100,31 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
         
         if (IsServer)
         {
-            StartCoroutine(ChangeColorCoroutine());
+            ChangeColorClientRpc(actualColor);
         }
         else
         {
-            StartCoroutine(AskColorCoroutine());
+            AskColorServerRpc();
         }
 
     }
 
-    public IEnumerator ChangeColorCoroutine()
+    [ServerRpc(RequireOwnership = false)]
+    public void AskColorServerRpc()
     {
-        yield return new WaitForSeconds(0.5f);
-        
-        NetworkColorfulJar.ChangeJarColorClientRpc(NetworkObjectId, GetRandomColor());
-        
- 
+        ChangeColorClientRpc(actualColor);
     }
-
-    public IEnumerator AskColorCoroutine()
+    
+    [ClientRpc]
+    public void ChangeColorClientRpc(Color color)
     {
-        yield return new WaitForSeconds(1f);
+        // Return if already synced with the host.
+        if (IsHost || actualColor == color)
+        {
+            return;
+        }  
         
-        NetworkColorfulJar.AskColorServerRpc(NetworkObjectId);
-        
- 
+        ChangeColor(color);
+
     }
 }

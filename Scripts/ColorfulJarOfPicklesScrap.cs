@@ -74,7 +74,7 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
         return new Color(color[0], color[1], color[2], alpha);
     }
     
-    public Color GetRandomColor(float initialAlpha = 1f)
+    public virtual Color GetRandomColor(float initialAlpha = 1f)
     {
 
         var baseColor = new Color(RandomZeroToOne(),

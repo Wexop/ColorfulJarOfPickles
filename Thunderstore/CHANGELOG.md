@@ -3,6 +3,7 @@
 ### v1.1.1
 
 - Add a new colorful jars of pickles
+- Rainbow pickles colors are now sync between players
 
 ### v1.1.0
 

@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.1.1
+
+- Add a new colorful jars of pickles
+
 ### v1.1.0
 
 - Fix Dancing jar of pickles animation + sometimes playing twice

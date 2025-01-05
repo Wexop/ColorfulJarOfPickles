@@ -38,6 +38,7 @@ namespace ColorfulJarOfPickles
         public ConfigEntry<string> dancingPicklesRarity;
         public ConfigEntry<string> cubePicklesRarity;
         public ConfigEntry<string> lonelyPicklesRarity;
+        public ConfigEntry<string> popPicklesRarity;
         
         public ConfigEntry<string> rainbowSmallJarSpawnMoonRarity;
         public ConfigEntry<string> rainbowBigJarSpawnMoonRarity;
@@ -155,6 +156,11 @@ namespace ColorfulJarOfPickles
                 RarityString(12) ,       
                 "Chance for lonely pickles scrap to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
             CreateStringConfig(lonelyPicklesRarity, true);
+            
+            popPicklesRarity = Config.Bind("General", "PopPicklesRarity", 
+                RarityString(8) ,       
+                "Chance for pop pickles scrap to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
+            CreateStringConfig(popPicklesRarity, true);
             
             //RAINBOWS
             
@@ -353,6 +359,14 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(lonelyPickles.spawnPrefab);
             Utilities.FixMixerGroups(lonelyPickles.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(lonelyPicklesRarity.Value, lonelyPickles ); 
+            
+            //popPickles
+            Item popPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/PopPickles.asset");
+            Logger.LogInfo($"{popPickles.name} FOUND");
+            Logger.LogInfo($"{popPickles.spawnPrefab} prefab");
+            NetworkPrefabs.RegisterNetworkPrefab(popPickles.spawnPrefab);
+            Utilities.FixMixerGroups(popPickles.spawnPrefab);
+            RegisterUtil.RegisterScrapWithConfig(popPicklesRarity.Value, popPickles ); 
             
             //rainbowSmallColorfulJar
             Item rainbowSmallColorfulJar = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/RainbowSmallPickleJar.asset");

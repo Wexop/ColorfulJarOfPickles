@@ -19,7 +19,13 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
     public Color actualColor;
 
     public UnityEvent<bool> onTriggerDance;
+    public UnityEvent onItemActivate;
     public UnityEvent onGrabItem;
+
+    public override void ItemActivate(bool used, bool buttonDown = true)
+    {
+        onItemActivate.Invoke();
+    }
 
     public virtual void TriggerDance(bool dance)
     {

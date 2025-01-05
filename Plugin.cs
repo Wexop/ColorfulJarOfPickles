@@ -20,7 +20,7 @@ namespace ColorfulJarOfPickles
 
         const string GUID = "wexop.colorful_jar_of_pickles";
         const string NAME = "ColorfulJarOfPickles";
-        const string VERSION = "1.1.0";
+        const string VERSION = "1.1.1";
 
         public static ColorfulJarOfPicklesPlugin instance;
 
@@ -53,6 +53,7 @@ namespace ColorfulJarOfPickles
         public ConfigEntry<string> rainbowGiantPicklesRarity;
         public ConfigEntry<string> rainbowDancingPicklesRarity;
         public ConfigEntry<string> rainbowCubePicklesRarity;
+        public ConfigEntry<string> rainbowPopPicklesRarity;
 
 
         public ConfigEntry<float> dancingMusicVolume;
@@ -229,6 +230,11 @@ namespace ColorfulJarOfPickles
                 RarityString(5) ,       
                 "Chance for rainbow cube pickles scrap to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
             CreateStringConfig(rainbowDancingPicklesRarity, true);
+            
+            rainbowPopPicklesRarity = Config.Bind("General", "RainbowPopPicklesRarity", 
+                RarityString(3) ,       
+                "Chance for rainbow pop pickles scrap to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
+            CreateStringConfig(rainbowPopPicklesRarity, true);
             
             //MUSIC
             dancingMusicVolume = Config.Bind("Sound", "DancingMusicVolume", 
@@ -463,6 +469,14 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(rainbowCubePickles.spawnPrefab);
             Utilities.FixMixerGroups(rainbowCubePickles.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(rainbowCubePicklesRarity.Value, rainbowCubePickles ); 
+            
+            //rainbowPopPicklesRarity
+            Item rainbowPopPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/PopPicklesRainbow.asset");
+            Logger.LogInfo($"{rainbowPopPickles.name} FOUND");
+            Logger.LogInfo($"{rainbowPopPickles.spawnPrefab} prefab");
+            NetworkPrefabs.RegisterNetworkPrefab(rainbowPopPickles.spawnPrefab);
+            Utilities.FixMixerGroups(rainbowPopPickles.spawnPrefab);
+            RegisterUtil.RegisterScrapWithConfig(rainbowPopPicklesRarity.Value, rainbowPopPickles ); 
 
         }
         

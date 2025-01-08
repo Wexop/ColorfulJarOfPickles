@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.1.3
+
+- Small fix
+
 ### v1.1.2
 
 - Add gift pickles scrap (Normal + rainbow !)

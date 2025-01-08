@@ -15,3 +15,7 @@ For any issue or suggestion, feel free to open an issue on the GitHub project !
 ## Music Credits
 
 - Music for Dancing pickles : Play Time - Fun Upbeat Gaming Birthday Music from FASSounds,  https://pixabay.com/fr/music/optimiste-play-time-fun-upbeat-gaming-birthday-music-259703/
+
+## Assets Credits
+
+- "Packaging Ribbons" (https://skfb.ly/oQRoO) by Bl@ke is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).

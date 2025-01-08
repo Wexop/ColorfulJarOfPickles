@@ -133,4 +133,10 @@ public class ColorfulJarOfPicklesScrap : PhysicsProp
         ChangeColor(color);
 
     }
+
+    [ClientRpc]
+    public void SetValueClientRpc(int value)
+    {
+        SetScrapValue(value);
+    }
 }

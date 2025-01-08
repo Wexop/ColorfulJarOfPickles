@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using BepInEx.Configuration;
+using ColorfulJarOfPickles.Scripts;
 using ColorfulJarOfPickles.Utils;
 using LethalConfig;
 using LethalConfig.ConfigItems;
@@ -20,9 +21,11 @@ namespace ColorfulJarOfPickles
 
         const string GUID = "wexop.colorful_jar_of_pickles";
         const string NAME = "ColorfulJarOfPickles";
-        const string VERSION = "1.1.1";
+        const string VERSION = "1.1.2";
 
         public static ColorfulJarOfPicklesPlugin instance;
+        public List<GameObject> ColorfulJarOfPicklesGameObjects = new List<GameObject>();
+        public List<GameObject> RainbowColorfulJarOfPicklesGameObjects = new List<GameObject>();
 
         public ConfigEntry<string> spawnMoonRarity;
         public ConfigEntry<string> bigJarSpawnMoonRarity;
@@ -39,6 +42,7 @@ namespace ColorfulJarOfPickles
         public ConfigEntry<string> cubePicklesRarity;
         public ConfigEntry<string> lonelyPicklesRarity;
         public ConfigEntry<string> popPicklesRarity;
+        public ConfigEntry<string> giftPicklesRarity;
         
         public ConfigEntry<string> rainbowSmallJarSpawnMoonRarity;
         public ConfigEntry<string> rainbowBigJarSpawnMoonRarity;
@@ -54,6 +58,7 @@ namespace ColorfulJarOfPickles
         public ConfigEntry<string> rainbowDancingPicklesRarity;
         public ConfigEntry<string> rainbowCubePicklesRarity;
         public ConfigEntry<string> rainbowPopPicklesRarity;
+        public ConfigEntry<string> rainbowGiftPicklesRarity;
 
 
         public ConfigEntry<float> dancingMusicVolume;
@@ -163,6 +168,11 @@ namespace ColorfulJarOfPickles
                 "Chance for pop pickles scrap to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
             CreateStringConfig(popPicklesRarity, true);
             
+            giftPicklesRarity = Config.Bind("General", "GiftPicklesRarity", 
+                RarityString(20) ,       
+                "Chance for gift pickles scrap to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
+            CreateStringConfig(giftPicklesRarity, true);
+            
             //RAINBOWS
             
             rainbowSmallJarSpawnMoonRarity = Config.Bind("General", "RainbowSmallJarScrapSpawnRarity", 
@@ -236,6 +246,11 @@ namespace ColorfulJarOfPickles
                 "Chance for rainbow pop pickles scrap to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
             CreateStringConfig(rainbowPopPicklesRarity, true);
             
+            rainbowGiftPicklesRarity = Config.Bind("General", "RainbowGiftPicklesRarity", 
+                RarityString(5) ,       
+                "Chance for rainbow gift pickles scrap to spawn for any moon, example => assurance:100,offense:50 . You need to restart the game.");
+            CreateStringConfig(rainbowGiftPicklesRarity, true);
+            
             //MUSIC
             dancingMusicVolume = Config.Bind("Sound", "DancingMusicVolume", 
                 0.4f,       
@@ -252,7 +267,8 @@ namespace ColorfulJarOfPickles
             Logger.LogInfo($"{colorfulJar.spawnPrefab} prefab");
             NetworkPrefabs.RegisterNetworkPrefab(colorfulJar.spawnPrefab);
             Utilities.FixMixerGroups(colorfulJar.spawnPrefab);
-            RegisterUtil.RegisterScrapWithConfig(spawnMoonRarity.Value, colorfulJar ); 
+            RegisterUtil.RegisterScrapWithConfig(spawnMoonRarity.Value, colorfulJar );
+            ColorfulJarOfPicklesGameObjects.Add(colorfulJar.spawnPrefab);
             
             //rainbowColorfulJar
             Item rainbowColorfulJar = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/RainbowPickleJar.asset");
@@ -261,6 +277,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(rainbowColorfulJar.spawnPrefab);
             Utilities.FixMixerGroups(rainbowColorfulJar.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(rainbowSpawnMoonRarity.Value, rainbowColorfulJar ); 
+            RainbowColorfulJarOfPicklesGameObjects.Add(rainbowColorfulJar.spawnPrefab);
+
             
             //bigColorfulJar
             Item bigColorfulJar = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/BigPickleJar.asset");
@@ -269,6 +287,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(bigColorfulJar.spawnPrefab);
             Utilities.FixMixerGroups(bigColorfulJar.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(bigJarSpawnMoonRarity.Value, bigColorfulJar ); 
+            ColorfulJarOfPicklesGameObjects.Add(bigColorfulJar.spawnPrefab);
+
             
             //smallColorfulJar
             Item smallColorfulJar = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/SmallPickleJar.asset");
@@ -277,6 +297,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(smallColorfulJar.spawnPrefab);
             Utilities.FixMixerGroups(smallColorfulJar.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(smallJarSpawnMoonRarity.Value, smallColorfulJar ); 
+            ColorfulJarOfPicklesGameObjects.Add(smallColorfulJar.spawnPrefab);
+
             
             //longColorfulJar
             Item longColorfulJar = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/LongColorfulPickleJar.asset");
@@ -285,6 +307,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(longColorfulJar.spawnPrefab);
             Utilities.FixMixerGroups(longColorfulJar.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(longJarSpawnMoonRarity.Value, longColorfulJar ); 
+            ColorfulJarOfPicklesGameObjects.Add(longColorfulJar.spawnPrefab);
+
             
             //flatColorfulJar
             Item flatColorfulJar = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/FlatPickleJar.asset");
@@ -293,6 +317,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(flatColorfulJar.spawnPrefab);
             Utilities.FixMixerGroups(flatColorfulJar.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(flatJarSpawnMoonRarity.Value, flatColorfulJar ); 
+            ColorfulJarOfPicklesGameObjects.Add(flatColorfulJar.spawnPrefab);
+
             
             //stackColorfulJar
             Item stackColorfulJar = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/StackSmallPickleJars.asset");
@@ -301,6 +327,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(stackColorfulJar.spawnPrefab);
             Utilities.FixMixerGroups(stackColorfulJar.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(stackSmallJarSpawnMoonRarity.Value, stackColorfulJar ); 
+            ColorfulJarOfPicklesGameObjects.Add(stackColorfulJar.spawnPrefab);
+
             
             //caseOfPickles
             Item caseOfPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/CaseOfPickles.asset");
@@ -309,6 +337,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(caseOfPickles.spawnPrefab);
             Utilities.FixMixerGroups(caseOfPickles.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(caseOfPicklesRarity.Value, caseOfPickles ); 
+            ColorfulJarOfPicklesGameObjects.Add(caseOfPickles.spawnPrefab);
+
             
             //caseOfSmallPickles
             Item caseOfSmallPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/CaseOfSmallPickles.asset");
@@ -317,6 +347,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(caseOfSmallPickles.spawnPrefab);
             Utilities.FixMixerGroups(caseOfSmallPickles.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(caseOfSmallPicklesRarity.Value, caseOfSmallPickles ); 
+            ColorfulJarOfPicklesGameObjects.Add(caseOfSmallPickles.spawnPrefab);
+
             
             //roundColorfulJar
             Item roundColorfulJar = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/RoundPickleJar.asset");
@@ -325,6 +357,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(roundColorfulJar.spawnPrefab);
             Utilities.FixMixerGroups(roundColorfulJar.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(roundJarSpawnMoonRarity.Value, roundColorfulJar );
+            ColorfulJarOfPicklesGameObjects.Add(roundColorfulJar.spawnPrefab);
+
             
             //FlaskPickles
             Item flaskPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/FlaskPickles.asset");
@@ -333,6 +367,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(flaskPickles.spawnPrefab);
             Utilities.FixMixerGroups(flaskPickles.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(flaskPicklesRarity.Value, flaskPickles );
+            ColorfulJarOfPicklesGameObjects.Add(flaskPickles.spawnPrefab);
+
             
             //CubePickles
             Item cubePickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/CubePickles.asset");
@@ -341,6 +377,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(cubePickles.spawnPrefab);
             Utilities.FixMixerGroups(cubePickles.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(cubePicklesRarity.Value, cubePickles );
+            ColorfulJarOfPicklesGameObjects.Add(cubePickles.spawnPrefab);
+
             
             //ColorfulPickleJarGiant
             Item colorfulPickleJarGiant = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/ColorfulPickleJarGiant.asset");
@@ -349,6 +387,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(colorfulPickleJarGiant.spawnPrefab);
             Utilities.FixMixerGroups(colorfulPickleJarGiant.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(giantPicklesRarity.Value, colorfulPickleJarGiant ); 
+            ColorfulJarOfPicklesGameObjects.Add(colorfulPickleJarGiant.spawnPrefab);
+
             
             //dancingPickles
             Item dancingPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/DancingPickles.asset");
@@ -357,6 +397,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(dancingPickles.spawnPrefab);
             Utilities.FixMixerGroups(dancingPickles.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(dancingPicklesRarity.Value, dancingPickles );
+            ColorfulJarOfPicklesGameObjects.Add(dancingPickles.spawnPrefab);
+
             
             //lonelyPickles
             Item lonelyPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/LonelyPickles.asset");
@@ -365,6 +407,9 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(lonelyPickles.spawnPrefab);
             Utilities.FixMixerGroups(lonelyPickles.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(lonelyPicklesRarity.Value, lonelyPickles ); 
+            //ColorfulJarOfPicklesGameObjects.Add(lonelyPickles.spawnPrefab);
+            //RainbowColorfulJarOfPicklesGameObjects.Add(lonelyPickles.spawnPrefab);
+
             
             //popPickles
             Item popPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/PopPickles.asset");
@@ -373,6 +418,18 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(popPickles.spawnPrefab);
             Utilities.FixMixerGroups(popPickles.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(popPicklesRarity.Value, popPickles ); 
+            ColorfulJarOfPicklesGameObjects.Add(popPickles.spawnPrefab);
+
+            
+            //giftPicklesRarity
+            Item giftPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/GiftPickles.asset");
+            Logger.LogInfo($"{giftPickles.name} FOUND");
+            Logger.LogInfo($"{giftPickles.spawnPrefab} prefab");
+            NetworkPrefabs.RegisterNetworkPrefab(giftPickles.spawnPrefab);
+            Utilities.FixMixerGroups(giftPickles.spawnPrefab);
+            RegisterUtil.RegisterScrapWithConfig(giftPicklesRarity.Value, giftPickles ); 
+            //ColorfulJarOfPicklesGameObjects.Add(giftPickles.spawnPrefab);
+
             
             //rainbowSmallColorfulJar
             Item rainbowSmallColorfulJar = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/RainbowSmallPickleJar.asset");
@@ -381,6 +438,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(rainbowSmallColorfulJar.spawnPrefab);
             Utilities.FixMixerGroups(rainbowSmallColorfulJar.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(rainbowSmallJarSpawnMoonRarity.Value, rainbowSmallColorfulJar ); 
+            RainbowColorfulJarOfPicklesGameObjects.Add(rainbowSmallColorfulJar.spawnPrefab);
+
             
             //rainbowBigColorfulJar
             Item rainbowBigColorfulJar = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/RainbowBigPickleJar.asset");
@@ -389,6 +448,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(rainbowBigColorfulJar.spawnPrefab);
             Utilities.FixMixerGroups(rainbowBigColorfulJar.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(rainbowBigJarSpawnMoonRarity.Value, rainbowBigColorfulJar ); 
+            RainbowColorfulJarOfPicklesGameObjects.Add(rainbowBigColorfulJar.spawnPrefab);
+
             
             //rainbowLongColorfulJar
             Item rainbowLongColorfulJar = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/RainbowLongColorfulPickleJar.asset");
@@ -397,6 +458,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(rainbowLongColorfulJar.spawnPrefab);
             Utilities.FixMixerGroups(rainbowLongColorfulJar.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(rainbowLongJarSpawnMoonRarity.Value, rainbowLongColorfulJar ); 
+            RainbowColorfulJarOfPicklesGameObjects.Add(rainbowLongColorfulJar.spawnPrefab);
+
             
             //rainbowFlatColorfulJar
             Item rainbowFlatColorfulJar = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/RainbowFlatPickleJar.asset");
@@ -405,6 +468,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(rainbowFlatColorfulJar.spawnPrefab);
             Utilities.FixMixerGroups(rainbowFlatColorfulJar.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(rainbowFlatJarSpawnMoonRarity.Value, rainbowFlatColorfulJar ); 
+            RainbowColorfulJarOfPicklesGameObjects.Add(rainbowFlatColorfulJar.spawnPrefab);
+
             
             //rainbowStackColorfulJar
             Item rainbowStackColorfulJar = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/RainbowStackSmallPickleJars.asset");
@@ -413,6 +478,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(rainbowStackColorfulJar.spawnPrefab);
             Utilities.FixMixerGroups(rainbowStackColorfulJar.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(rainbowStackSmallJarSpawnMoonRarity.Value, rainbowStackColorfulJar ); 
+            RainbowColorfulJarOfPicklesGameObjects.Add(rainbowStackColorfulJar.spawnPrefab);
+
             
             //rainbowRoundColorfulJar
             Item rainbowRoundColorfulJar = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/RainbowRoundPickleJar.asset");
@@ -421,6 +488,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(rainbowRoundColorfulJar.spawnPrefab);
             Utilities.FixMixerGroups(rainbowRoundColorfulJar.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(rainbowRoundJarSpawnMoonRarity.Value, rainbowRoundColorfulJar ); 
+            RainbowColorfulJarOfPicklesGameObjects.Add(rainbowRoundColorfulJar.spawnPrefab);
+
             
             //rainbowCaseOfPickles
             Item rainbowCaseOfPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/CaseOfPicklesRainbow.asset");
@@ -429,6 +498,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(rainbowCaseOfPickles.spawnPrefab);
             Utilities.FixMixerGroups(rainbowCaseOfPickles.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(rainbowCaseOfPicklesRarity.Value, rainbowCaseOfPickles ); 
+            RainbowColorfulJarOfPicklesGameObjects.Add(rainbowCaseOfPickles.spawnPrefab);
+
             
             //rainbowCaseOfSmallPickles
             Item rainbowCaseOfSmallPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/CaseOfSmallPicklesRainbow.asset");
@@ -437,6 +508,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(rainbowCaseOfSmallPickles.spawnPrefab);
             Utilities.FixMixerGroups(rainbowCaseOfSmallPickles.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(rainbowCaseOfSmallPicklesRarity.Value, rainbowCaseOfSmallPickles ); 
+            RainbowColorfulJarOfPicklesGameObjects.Add(rainbowCaseOfSmallPickles.spawnPrefab);
+
             
             //RainbowFlaskPickles
             Item rainbowFlaskPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/FlaskPicklesRainbow.asset");
@@ -445,6 +518,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(rainbowFlaskPickles.spawnPrefab);
             Utilities.FixMixerGroups(rainbowFlaskPickles.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(rainbowFlaskPicklesRarity.Value, rainbowFlaskPickles );
+            RainbowColorfulJarOfPicklesGameObjects.Add(rainbowFlaskPickles.spawnPrefab);
+
             
             //rainbowGiantPickles
             Item rainbowGiantPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/ColorfulPickleJarGiantRainbow.asset");
@@ -453,6 +528,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(rainbowGiantPickles.spawnPrefab);
             Utilities.FixMixerGroups(rainbowGiantPickles.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(rainbowGiantPicklesRarity.Value, rainbowGiantPickles ); 
+            RainbowColorfulJarOfPicklesGameObjects.Add(rainbowGiantPickles.spawnPrefab);
+
             
             //rainbowDancingPickles
             Item rainbowDancingPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/DancingPicklesRainbow.asset");
@@ -461,6 +538,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(rainbowDancingPickles.spawnPrefab);
             Utilities.FixMixerGroups(rainbowDancingPickles.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(rainbowDancingPicklesRarity.Value, rainbowDancingPickles ); 
+            RainbowColorfulJarOfPicklesGameObjects.Add(rainbowDancingPickles.spawnPrefab);
+
             
             //rainbowCubePicklesRarity
             Item rainbowCubePickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/CubePicklesRainbow.asset");
@@ -469,6 +548,8 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(rainbowCubePickles.spawnPrefab);
             Utilities.FixMixerGroups(rainbowCubePickles.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(rainbowCubePicklesRarity.Value, rainbowCubePickles ); 
+            RainbowColorfulJarOfPicklesGameObjects.Add(rainbowCubePickles.spawnPrefab);
+
             
             //rainbowPopPicklesRarity
             Item rainbowPopPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/PopPicklesRainbow.asset");
@@ -477,6 +558,18 @@ namespace ColorfulJarOfPickles
             NetworkPrefabs.RegisterNetworkPrefab(rainbowPopPickles.spawnPrefab);
             Utilities.FixMixerGroups(rainbowPopPickles.spawnPrefab);
             RegisterUtil.RegisterScrapWithConfig(rainbowPopPicklesRarity.Value, rainbowPopPickles ); 
+            RainbowColorfulJarOfPicklesGameObjects.Add(rainbowPopPickles.spawnPrefab);
+
+            
+            //rainbowGiftPicklesRarity
+            Item rainbowGiftPickles = bundle.LoadAsset<Item>("Assets/LethalCompany/Mods/ColorfulJarOfPickles/GiftPicklesRainbow.asset");
+            Logger.LogInfo($"{rainbowGiftPickles.name} FOUND");
+            Logger.LogInfo($"{rainbowGiftPickles.spawnPrefab} prefab");
+            NetworkPrefabs.RegisterNetworkPrefab(rainbowGiftPickles.spawnPrefab);
+            Utilities.FixMixerGroups(rainbowGiftPickles.spawnPrefab);
+            RegisterUtil.RegisterScrapWithConfig(rainbowGiftPicklesRarity.Value, rainbowGiftPickles ); 
+            //RainbowColorfulJarOfPicklesGameObjects.Add(rainbowGiftPickles.spawnPrefab);
+
 
         }
         

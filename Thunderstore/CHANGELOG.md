@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.1.2
+
+- Add gift pickles scrap (Normal + rainbow !)
+
 ### v1.1.1
 
 - Add a new colorful jars of pickles

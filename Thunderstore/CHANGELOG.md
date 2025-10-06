@@ -1,5 +1,10 @@
 # Changelog
 
+### v1.1.4
+
+- Recompile the code to be compatible with v 73
+
+
 ### v1.1.3
 
 - Small fix
